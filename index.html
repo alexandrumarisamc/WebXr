@@ -1,1 +1,64 @@
 my web xr // write a code to display bubles on the screen
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebXR Bubbles</title>
+    <style>
+      #canvas {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <canvas id="canvas"></canvas>
+
+    <script>
+      // Create a WebGL renderer
+      const canvas = document.getElementById("canvas");
+      const renderer = new THREE.WebGLRenderer({ canvas });
+
+      // Set up the scene
+      const scene = new THREE.Scene();
+
+      // Set up the camera
+      const camera = new THREE.PerspectiveCamera(
+        75,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.z = 5;
+
+      // Create bubbles
+      const bubbleGeometry = new THREE.SphereGeometry(1, 32, 32);
+      const bubbleMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const bubbles = [];
+
+      for (let i = 0; i < 10; i++) {
+        const bubble = new THREE.Mesh(bubbleGeometry, bubbleMaterial);
+        bubble.position.x = Math.random() * 10 - 5;
+        bubble.position.y = Math.random() * 10 - 5;
+        bubble.position.z = Math.random() * 10 - 5;
+        scene.add(bubble);
+        bubbles.push(bubble);
+      }
+
+      // Render loop
+      function animate() {
+        requestAnimationFrame(animate);
+
+        // Rotate the bubbles
+        bubbles.forEach((bubble) => {
+          bubble.rotation.x += 0.01;
+          bubble.rotation.y += 0.01;
+        });
+
+        // Render the scene
+        renderer.render(scene, camera);
+      }
+
+      animate();
+    </script>
+  </body>
+</html>
